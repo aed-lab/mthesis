@@ -1,2 +1,2 @@
-# mthesis
+# 修士論文master
 修士論文のマスター
