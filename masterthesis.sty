@@ -1,0 +1,367 @@
+% 
+% "東京工科大学メディア研究科修士論文スタイルファイル
+% 
+% ver 1.00	: 2004/11/29 : 初期バージョン
+% ver 2.00	: 2015/10/23 : 現状の LaTeX の環境に合わせて諸々を変更
+% ver 2.01	: 2018/11/22 : LaTeXで寸法の扱い方が変わったのでそれに合わせて変更
+% ver 3.00	: 2019/10/28 : 画像形式を EPS 以外を利用できるように修正
+% ver 3.00a : 2021/10/25 : 2021年度用に改定
+%
+% written by Earth Watanabe.
+
+\typeout{Master Thesis style for Graduate School of Media Science,}
+\typeout{ Ver 2.02 by Taichi Watanabe. (earth@gamescience.jp) }
+
+\usepackage{amsmath, amssymb}
+\usepackage[dvipdfmx]{graphicx,color}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage{pxjahyper}
+\usepackage{float}
+\usepackage{ascmac}
+\usepackage{url}
+\usepackage{lineno}
+\usepackage{multirow}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\def\@capfigure{図}
+\def\@captable{表}
+% \def\@capfigure{Fig}
+% \def\@captable{Table}
+
+\def\thebibliography#1{\chapter{参考文献\@mkboth
+ {関 連 書 籍}{関 連 書 籍}}\list
+ {[\arabic{enumi}]}{\settowidth\labelwidth{[#1]}\leftmargin\labelwidth
+ \advance\leftmargin\labelsep
+ \usecounter{enumi}}
+ \def\newblock{\hskip .11em plus .33em minus .07em}
+ \sloppy
+ \sfcode`\.=1000\relax}
+\let\endthebibliography=\endlist
+
+% 章番号。
+
+\def\@chapapp{第}
+
+\def\thechapter {\arabic{chapter}}
+
+% 付録の判定。Appendixを付録にする。
+\newcount\@flagappendix
+\@flagappendix=0
+
+\def\appendix{\par
+ \setcounter{chapter}{0}
+ \setcounter{section}{0}
+ \@flagappendix=1
+ \def\@chapapp{付録}
+ \def\thechapter{\Alph{chapter}}}
+
+% 章番号無しの判定。
+\newcount\@nochapnumber
+\@nochapnumber=0
+
+\def\delchapnumber{\par
+ \@nochapnumber=1
+}
+\def\undochapnumber{\par
+ \@nochapnumber=0
+}
+
+\def\@makechapterhead#1{
+\vspace*{50truept}
+{\parindent 0truept \raggedright 
+ \ifnum \c@secnumdepth >\m@ne \huge\bf \begin{center}
+ \ifnum \@flagappendix>0
+ 	\@chapapp{} \thechapter\space \par 
+ \else
+	\ifnum \@nochapnumber=0
+		\@chapapp{} \thechapter\space 章 \par 
+	\else
+		\addtocounter{chapter}{-1}
+	\fi
+ \fi
+ \vskip 20truept \fi \Huge \bf #1\par 
+ \end{center}
+ \newpage
+}}
+
+\def\chapter{
+\clearpage
+\global\@topnum\z@
+\@afterindenttrue \secdef\@chapter\@schapter} 
+
+\def\@chapter[#1]#2{\ifnum \c@secnumdepth >\m@ne
+ \refstepcounter{chapter}
+ \ifnum \@flagappendix>0
+ 	\typeout{\@chapapp\space\thechapter\space.}
+ \else
+ 	\ifnum \@nochapnumber=1
+		\typeout{.}
+ 	\else
+ 		\typeout{\@chapapp\space\thechapter\space 章.}
+ 	\fi
+ \fi
+ \ifnum \@nochapnumber=1
+ 	\addcontentsline{toc}{chapter}{\protect
+ 	\numberline{ }#1}
+ \else
+ 	\addcontentsline{toc}{chapter}{\protect
+	\numberline{\hspace*{-3.4truemm}\@chapapp\thechapter 章}\hspace{1em}#1}
+ \fi
+ \else
+ \addcontentsline{toc}{chapter}{#1}\fi
+ \chaptermark{#1}
+ \addtocontents{lof}{\protect\addvspace{10truept}}
+\addtocontents{lot}{\protect\addvspace{10truept}} \if@twocolumn
+\@topnewpage[\@makechapterhead{#2}] 
+ \else \@makechapterhead{#2}
+ \@afterheading \fi}
+
+\def\@schapter#1{\if@twocolumn \@topnewpage[\@makeschapterhead{#1}]
+ \else \@makeschapterhead{#1} 
+ \@afterheading\fi}
+
+% 目次をセンターに持っていく。
+
+\def\tableofcontents{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{\begin{center} \vspace{-5truemm} 目 次\@mkboth{目 次}{目 次} \end{center}}
+ \@starttoc{toc}\if@restonecol\twocolumn\fi}
+\def\l@part#1#2{\addpenalty{-\@highpenalty}
+ \addvspace{2.25em plus 1truept} \begingroup
+ \@tempdima 3em \parindent \z@ \rightskip \@pnumwidth \parfillskip -\@pnumwidth 
+ {\large \bf \leavevmode #1\hfil \hbox to\@pnumwidth{\hss #2}}\par
+ \nobreak \endgroup}
+
+\def\listoffigures{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{\begin{center} \vspace{-5truemm} 図 目 次\@mkboth
+ {図 目 次}{図 目 次} \end{center}}\@starttoc{lof}\if@restonecol\twocolumn
+ \fi}
+\def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
+\def\listoftables{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+ \fi\chapter*{\begin{center} \vspace{-5truemm} 表 目 次\@mkboth
+ {表 目 次}{表 目 次} \end{center}}\@starttoc{lot}\if@restonecol
+ \twocolumn\fi}
+\let\l@table\l@figure
+
+
+\def\PaperTypeI#1{\gdef\@PaperTypeI{#1}}
+\def\@PaperTypeI{}
+\def\PaperTypeII#1{\gdef\@PaperTypeII{#1}}
+\def\@PaperTypeII{}
+\def\YearH#1{\gdef\@YearH{#1}}
+\def\@YearH{}
+\def\PaperTitleIJ#1{\gdef\@PaperTitleIJ{#1}}
+\def\@PaperTitle{}
+\def\PaperTitleIIJ#1{\gdef\@PaperTitleIIJ{#1}}
+\def\@PaperTitleL{}
+\def\AuthorNameJ#1{\gdef\@AuthorNameJ{#1}}
+\def\@AuthorNameJ{}
+\def\TeacherNameJ#1{\gdef\@TeacherNameJ{#1}}
+\def\@TeacherNameJ{}
+\def\KeyWordsIJ#1{\gdef\@KeyWordsIJ{#1}}
+\def\@KeyWordsIJ{}
+\def\KeyWordsIIJ#1{\gdef\@KeyWordsIIJ{#1}}
+\def\@KeyWordsIIJ{}
+\def\AbstractJ#1{\gdef\@AbstractJ{#1}}
+\def\@AbstractJ{}
+
+\def\PaperTitleIE#1{\gdef\@PaperTitleIE{#1}}
+\def\@PaperTitle{}
+\def\PaperTitleIIE#1{\gdef\@PaperTitleIIE{#1}}
+\def\@PaperTitleL{}
+\def\AuthorNameE#1{\gdef\@AuthorNameE{#1}}
+\def\@AuthorNameE{}
+\def\TeacherNameE#1{\gdef\@TeacherNameE{#1}}
+\def\@TeacherNameE{}
+\def\KeyWordsIE#1{\gdef\@KeyWordsIE{#1}}
+\def\@KeyWordsIE{}
+\def\KeyWordsIIE#1{\gdef\@KeyWordsIIE{#1}}
+\def\@KeyWordsIIE{}
+\def\AbstractE#1{\gdef\@AbstractE{#1}}
+\def\@AbstractE{}
+
+\newcommand{\EPSorEPDF}[2]{%
+ 	\ifnum \@FigureType=1
+		\mbox{
+		\pdfimage width #1
+		{#2.pdf}}
+ 	\else
+%		\epsfxsize=#1
+		\mbox{\includegraphics[width=#1]{#2.eps}}
+ 	\fi
+}
+
+\newcommand{\MasterThesisTitle}{%
+% \PaperTypeI		% 種別 (区切り：全角スペース１)
+% \PaperTypeII		% 種別 (区切り：全角スペース２)
+% \YearH		% 年度 (西暦)
+% \BringYear		% 提出：年
+% \BringMonth		% 提出：月
+% \BringDate		% 提出：日
+% \PaperTitleIJ		% 論文タイトル (日本語)
+% \PaperTitleIIJ	% 論文タイトル (短い場合は空欄もしくは宣言しない) (日本語)
+% \AuthorNameJ		% 著者名 (日本語)
+% \TeacherNameIJ	% 教員名 (日本語)
+% \AbstractJ		% 要旨 (日本語)
+% \PaperTitleIE		% 論文タイトル (英語)
+% \PaperTitleIIE	% 論文タイトル (短い場合は空欄もしくは宣言しない) (英語)
+% \AuthorNameE		% 著者名 (英語)
+% \TeacherNameIE	% 教員名 (英語)
+% \AbstractE		% 要旨 (英語)
+
+\begin{titlepage}
+\setlength{\textheight}{23.0truecm}
+
+%%%%%%%%%%%%%%%%%
+% First page.
+%
+%\clearpage
+\thispagestyle{empty}
+
+\vspace*{-1.7truecm}
+\begin{center}
+
+\begin{tabular}{lr}
+	修士論文 & \@YearH 年度 \\
+	\hspace{10truecm} & \\
+\end{tabular}
+\end{center}
+\vspace{3truecm}
+\begin{center}
+\begin{LARGE}
+\begin{tabular}{c}
+	\@PaperTitleIJ \\
+	\@PaperTitleIIJ \\
+\end{tabular}
+\end{LARGE}
+\end{center}
+\vspace{8.3truecm}
+\begin{center}
+\begin{tabular}{c}
+	{\Large 東~京~工~科~大~学~大~学~院} \\ ~ \\
+	{\Large バ~イ~オ~・~情~報~メ~デ~ィ~ア~研~究~科} \\ ~ \\
+	{\Large メ~デ~ィ~ア~サ~イ~エ~ン~ス~専~攻} \\ ~ \\ ~ \\
+	{\Large \@AuthorNameJ} \\
+\end{tabular}
+\end{center}
+\newpage
+%%%%%%%%%%%%%%%%%
+% Middle Title Page
+%
+\thispagestyle{empty}
+
+\vspace*{-1.7truecm}
+\begin{center}
+\begin{tabular}{lr}
+	修士論文 & \@YearH 年度 \\
+	\hspace{10truecm} & \\
+\end{tabular}
+\end{center}
+\vspace{3truecm}
+\begin{center}
+\begin{LARGE}
+\begin{tabular}{c}
+	\@PaperTitleIJ \\
+	\@PaperTitleIIJ \\
+\end{tabular}
+\end{LARGE}
+\end{center}
+\vspace{2.3truecm}
+\begin{center}
+\begin{tabular}{c}
+	{\large 指導教員 \quad \@TeacherNameJ}
+\end{tabular}
+\end{center}
+\vspace{5truecm}
+\begin{center}
+\begin{tabular}{c}
+	{\Large 東~京~工~科~大~学~大~学~院} \\ ~ \\
+	{\Large バ~イ~オ~・~情~報~メ~デ~ィ~ア~研~究~科} \\ ~ \\
+	{\Large メ~デ~ィ~ア~サ~イ~エ~ン~ス~専~攻} \\ ~ \\ ~ \\
+	{\Large \@AuthorNameJ} \\
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%
+% Abst page (Japanese).
+%
+
+\clearpage
+\thispagestyle{empty}
+\begin{center}
+\begin{Large}
+{\bf 論~文~の~要~旨}
+\end{Large}
+\end{center}
+\begin{tabular}{|p{2truecm}|c|}
+\hline
+\multicolumn{1}{|c|}{\smash{\raisebox{-3truemm}{論文題目}}}
+	& \multicolumn{1}{|c|}{\@PaperTitleIJ} \\
+&	{\@PaperTitleIIJ} \\ \hline
+\multicolumn{1}{|c|}{執筆者氏名} &
+	{\@AuthorNameJ} \\ \hline
+\multicolumn{1}{|c|}{指導教員} &
+	{\@TeacherNameJ} \\ \hline
+\multicolumn{1}{|c|}{\smash{\raisebox{-3truemm}{キーワード}}}
+	& \multicolumn{1}{|l|}{\@KeyWordsIJ} \\
+	& \multicolumn{1}{|l|}{\@KeyWordsIIJ} \\ \hline
+\multicolumn{2}{|p{162truemm}|}{
+\begin{minipage}[t]{0truemm}
+	\rule[-167truemm]{0truept}{0truept}
+\end{minipage}
+\begin{minipage}[t]{160truemm}
+	{\bf [要旨]} \\ ~
+	\parindent 1em
+	\@AbstractJ
+\end{minipage}
+} \\ \hline
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%
+% Abst page (English).
+%
+
+\clearpage
+\thispagestyle{empty}
+\begin{center}
+\begin{Large}
+{\bf A~b~s~t~r~a~c~t}
+\end{Large}
+\end{center}
+\begin{tabular}{|p{2truecm}|c|}
+\hline
+\multicolumn{1}{|c|}{\smash{\raisebox{-3truemm}{Title}}}
+& \multicolumn{1}{|c|}{\@PaperTitleIE} \\
+&	{\@PaperTitleIIE} \\ \hline
+\multicolumn{1}{|c|}{Author} &
+	{\@AuthorNameE} \\ \hline
+\multicolumn{1}{|c|}{Advisor} &
+	{\@TeacherNameE} \\ \hline
+\multicolumn{1}{|c|}{\smash{\raisebox{-3truemm}{Key Words}}}
+	& \multicolumn{1}{|l|}{\@KeyWordsIE} \\
+	& \multicolumn{1}{|l|}{\@KeyWordsIIE} \\ \hline
+\multicolumn{2}{|p{162truemm}|}{
+\begin{minipage}[t]{0truecm}
+	\rule[-167truemm]{0truept}{0truept}
+\end{minipage}
+\begin{minipage}[t]{160truemm}
+	{\bf [summary]} \\ ~
+	\parindent 1em
+	\@AbstractE
+\end{minipage}
+} \\ \hline
+\end{tabular}
+\end{titlepage}
+}
+
+\newcount\@FigureType
+\@FigureType=0
+
+\def\FigureEPDF{\par
+ \@FigureType=1
+}
+\def\FigureEPS{\par
+ \@FigureType=0
+}
+
