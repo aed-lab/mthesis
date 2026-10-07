@@ -14,10 +14,10 @@
 強制改行(\verb+\\+)は利用すべきではない。
 
 しかしながら、例えば \verb+\verb+ 環境やインライン数式を用いる場合などで、
-\verb+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+ 
+\verb+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+
 というようにページ幅を超えてしまったり、前の行が間延びしてしまうようなケースがある。
 そのような場合、\verb+\\+ を用いて強制改行により \\
-\verb+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+ 
+\verb+abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ+
 というように用いるとよい。
 
 \section{箇条書き}
@@ -63,15 +63,15 @@ enumerate 環境や itemize 環境は、入れ子構造を持つことができ�
 何かの手違いで図が表示されなくなったとしても、文章で意味が通じるくらいに説明するのを目安にすること。
 以下の図 \ref{fig:sample} と図 \ref{fig:ferret} は、適当なサンプル画像である。
 
-\begin{figure}[H]
+\begin{figure}[ht]
   \centering
-  \includegraphics[width=6.4cm]{./fig/fig-sample.eps}
+  \includegraphics[width=6.4cm]{./fig/fig-sample.pdf}
   \caption{適当なサンプル}
 % \url{http://www.this.is.sample.url/} % Web上のデータの場合、参照先URLを明記
   \label{fig:sample}
 \end{figure}
 
-\begin{figure}[H]
+\begin{figure}[ht]
   \centering
   \includegraphics[width=6.4truecm]{./fig/ferret.png}
   \caption{適当なサンプル2}
@@ -101,6 +101,7 @@ fig サブフォルダ内に格納することを推奨する。
    参照対象	& プリフィクス \\ \hline
    章		& chp: \\ \hline
    節		& sec: \\ \hline
+   項		& subsec: \\ \hline
    図		& fig: \\ \hline
    表 		& tbl: \\ \hline
    式   	& eqn: \\ \hline
@@ -111,12 +112,46 @@ fig サブフォルダ内に格納することを推奨する。
 \section{\LaTeX のコンパイル}
 \LaTeX のコンパイルは、「コマンドプロンプト」や「PowerShell」などのコマンドライン上で「
 latexmk」コマンドを用いる。
-例えば、「M01xxyyy.tex」というファイルから PDF を作成したい場合は
+例えば、「G31xxyyy\_Main.tex」というファイルから PDF を作成したい場合は
 \begin{verbatim}
-    latexmk M01xxyyy
+    latexmk G31xxyyy_Main
 \end{verbatim}
 というように、拡張子を抜いてコマンドラインで指定する。
+このファイル名の「G31xxyyy」という部分を、自身の学籍番号や氏名等に変更しておくことを推奨する。
+以降、本文書ではこのファイルを「Main.tex」と記述するものとする。
 
 また、コマンドラインに不慣れな学生は、
-Atom エディタ等の \LaTeX パッケージを用いることも良案である。
-Atom エディタを用いた \LaTeX の記述については、研究室 Wiki を参照のこと。
+VSCode エディタ等の \LaTeX パッケージを用いることも良案である。
+VSCode エディタを用いた \LaTeX の記述については、渡辺研究室 Wiki
+(\url{https://gamescience.jp/Wiki/}) の「LaTeX スタートアップ」を参照のこと。
+
+\section{設定や調整}
+\subsection{体裁調整}
+本テンプレートでの src フォルダ内にある「config.tex」の中を修正することにより、
+論文の体裁を色々と調整することができる。
+具体的には、以下のような項目を調整することができる。
+\begin{itemize}
+ \item ページの余白設定。余白の寸法で表示する方法と、
+	行あたり文字数+行数で指定する方法の2種類が選択できる。
+ \item 本文の行間幅。
+ \item 図や表のキャプションと図表との間隔。
+ \item 図や tex ファイルを格納するフォルダ名
+ \item 参考文献の掲載順や文献番号スタイル。
+ \item PDF しおりについての各種設定
+\end{itemize}
+詳細は、config.tex の中にあるコメント文を参照のこと。
+
+また、Main.tex 内の最初の \verb+\documentclass+ の中のオプションで、
+フォントサイズを変更することが可能である。
+
+\subsection{目次表記}
+Main.tex の中で、対象となる行のコメントアウトの有無で、以下のような調整ができる。
+\begin{itemize}
+ \item 行番号表示の有無(\verb+\pagewiselinenumbers+)
+ \item 図目次表示の有無(\verb+\listoffigures+)
+ \item 表目次表示の有無(\verb+\listoftables+)
+\end{itemize}
+
+\subsection{各種設定}
+著者氏名や論文タイトルなどの設定は、src フォルダ内にある preface.tex で行う。
+各項目については preface.tex のコメント文を参照のこと。

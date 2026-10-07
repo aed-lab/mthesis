@@ -5,22 +5,28 @@
 % ver 2.00	: 2015/10/23 : 現状の LaTeX の環境に合わせて諸々を変更
 % ver 2.01	: 2018/11/22 : LaTeXで寸法の扱い方が変わったのでそれに合わせて変更
 % ver 3.00	: 2019/10/28 : 画像形式を EPS 以外を利用できるように修正
-% ver 3.00a : 2021/10/25 : 2021年度用に改定
+% ver 4.00	: 2022/10/30 : uplatex と VSCode に対応
+% ver 5.00	: 2023/10/20 : 文章内容を全面的に改定、config.tex 新設。
+% ver 5.01	: 2023/10/23 : 文章内容を若干修正。
+% ver 6.00	: 2024/08/23 : Word版と整合を取るため体裁を調整
 %
 % written by Earth Watanabe.
 
 \typeout{Master Thesis style for Graduate School of Media Science,}
-\typeout{ Ver 2.02 by Taichi Watanabe. (earth@gamescience.jp) }
+\typeout{ Ver 6.00 by Taichi Watanabe. (earth@gamescience.jp) }
 
 \usepackage{amsmath, amssymb}
-\usepackage[dvipdfmx]{graphicx,color}
-\usepackage[dvipdfmx]{hyperref}
+\usepackage{xcolor}
+\usepackage{graphicx, color}
+\usepackage{hyperref}
 \usepackage{pxjahyper}
 \usepackage{float}
 \usepackage{ascmac}
 \usepackage{url}
 \usepackage{lineno}
 \usepackage{multirow}
+\usepackage{pxbase}
+\usepackage{comment}
 
 \setcounter{secnumdepth}{4}
 \setcounter{tocdepth}{4}
@@ -71,7 +77,7 @@
 \def\@makechapterhead#1{
 \vspace*{50truept}
 {\parindent 0truept \raggedright 
- \ifnum \c@secnumdepth >\m@ne \huge\bf \begin{center}
+ \ifnum \c@secnumdepth >\m@ne \huge\bfseries \begin{center}
  \ifnum \@flagappendix>0
  	\@chapapp{} \thechapter\space \par 
  \else
@@ -81,7 +87,7 @@
 		\addtocounter{chapter}{-1}
 	\fi
  \fi
- \vskip 20truept \fi \Huge \bf #1\par 
+ \vskip 20truept \fi \Huge \bfseries #1\par 
  \end{center}
  \newpage
 }}
@@ -124,25 +130,38 @@
 
 % 目次をセンターに持っていく。
 
-\def\tableofcontents{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \fi\chapter*{\begin{center} \vspace{-5truemm} 目 次\@mkboth{目 次}{目 次} \end{center}}
- \@starttoc{toc}\if@restonecol\twocolumn\fi}
-\def\l@part#1#2{\addpenalty{-\@highpenalty}
- \addvspace{2.25em plus 1truept} \begingroup
- \@tempdima 3em \parindent \z@ \rightskip \@pnumwidth \parfillskip -\@pnumwidth 
- {\large \bf \leavevmode #1\hfil \hbox to\@pnumwidth{\hss #2}}\par
- \nobreak \endgroup}
+\renewcommand{\contentsname}{
+	\makebox[\linewidth]{\hfill 目\hspace{1zw}次\hfill}
+}
 
-\def\listoffigures{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \fi\chapter*{\begin{center} \vspace{-5truemm} 図 目 次\@mkboth
- {図 目 次}{図 目 次} \end{center}}\@starttoc{lof}\if@restonecol\twocolumn
- \fi}
-\def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
-\def\listoftables{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
- \fi\chapter*{\begin{center} \vspace{-5truemm} 表 目 次\@mkboth
- {表 目 次}{表 目 次} \end{center}}\@starttoc{lot}\if@restonecol
- \twocolumn\fi}
-\let\l@table\l@figure
+\renewcommand{\listfigurename}{
+	\makebox[\linewidth]{\hfill 図~目~次\hfill}
+}
+
+\renewcommand{\listtablename}{
+	\makebox[\linewidth]{\hfill 表~目~次\hfill}
+}
+
+
+%\def\tableofcontents{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+% \fi\chapter*{\begin{center} \vspace{-5truemm} 目 次\@mkboth{目 次}{目 次} \end{center}}
+% \@starttoc{toc}\if@restonecol\twocolumn\fi}
+%\def\l@part#1#2{\addpenalty{-\@highpenalty}
+% \addvspace{2.25em plus 1truept} \begingroup
+% \@tempdima 3em \parindent \z@ \rightskip \@pnumwidth \parfillskip -\@pnumwidth 
+% {\large \bfseries \leavevmode #1\hfil \hbox to\@pnumwidth{\hss #2}}\par
+% \nobreak \endgroup}
+
+%\def\listoffigures{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+% \fi\chapter*{\begin{center} \vspace{-5truemm} 図 目 次\@mkboth
+% {図 目 次}{図 目 次} \end{center}}\@starttoc{lof}\if@restonecol\twocolumn
+% \fi}
+%\def\l@figure{\@dottedtocline{1}{1.5em}{2.3em}}
+%\def\listoftables{\@restonecolfalse\if@twocolumn\@restonecoltrue\onecolumn
+% \fi\chapter*{\begin{center} \vspace{-5truemm} 表 目 次\@mkboth
+% {表 目 次}{表 目 次} \end{center}}\@starttoc{lot}\if@restonecol
+% \twocolumn\fi}
+%\let\l@table\l@figure
 
 
 \def\PaperTypeI#1{\gdef\@PaperTypeI{#1}}
@@ -291,7 +310,7 @@
 \thispagestyle{empty}
 \begin{center}
 \begin{Large}
-{\bf 論~文~の~要~旨}
+\textbf{論~文~の~要~旨}
 \end{Large}
 \end{center}
 \begin{tabular}{|p{2truecm}|c|}
@@ -311,7 +330,7 @@
 	\rule[-167truemm]{0truept}{0truept}
 \end{minipage}
 \begin{minipage}[t]{160truemm}
-	{\bf [要旨]} \\ ~
+	\textbf{[要旨]} \\ ~
 	\parindent 1em
 	\@AbstractJ
 \end{minipage}
@@ -326,7 +345,7 @@
 \thispagestyle{empty}
 \begin{center}
 \begin{Large}
-{\bf A~b~s~t~r~a~c~t}
+\textbf{A~b~s~t~r~a~c~t}
 \end{Large}
 \end{center}
 \begin{tabular}{|p{2truecm}|c|}
@@ -346,7 +365,7 @@
 	\rule[-167truemm]{0truept}{0truept}
 \end{minipage}
 \begin{minipage}[t]{160truemm}
-	{\bf [summary]} \\ ~
+	\textbf{[summary]} \\ ~
 	\parindent 1em
 	\@AbstractE
 \end{minipage}
@@ -364,4 +383,3 @@
 \def\FigureEPS{\par
  \@FigureType=0
 }
-
