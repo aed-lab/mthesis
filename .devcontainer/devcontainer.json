@@ -2,11 +2,9 @@
   "name": "Japanese Academic LaTeX",
 
   "image": "ghcr.io/aed-lab/thesis-latex:2026.1",
-
   "remoteUser": "vscode",
-
-  "postCreateCommand": "git config --global --add safe.directory \"${containerWorkspaceFolder}\"",
-
+  "postCreateCommand": "git config --global --add safe.directory \"${containerWorkspaceFolder}\" && bash .devcontainer/codespaces-setup.sh",
+  
   "customizations": {
     "vscode": {
       "extensions": [
