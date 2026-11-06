@@ -5,15 +5,15 @@ Github Codespace・Vscode Devcontainer に対応しています。
 DockerImageはPaperistというの軽量のイメージをベースに拡張してあります。
 拡張項目は以下のとおり
 
-| git              | Git操作
-| sudo             | 学生Dev Container用
-| openssh-client   | Git SSH接続
-| ca-certificates  | HTTPS
-| locales          | 日本語・英語locale
-| GhostScript      | Ghostscript/ TeXでのeps処理
-| python3          | thesis-monitor
-| python3-yaml     | students.yml / snapshot処理
-| poppler-utils    | pdfinfo（ページ数取得）
+| git              | Git操作  |
+| sudo             | 学生Dev Container用 |
+| openssh-client   | Git SSH接続  |
+| ca-certificates  | HTTPS  |
+| locales          | 日本語・英語locale  |
+| GhostScript      | Ghostscript/ TeXでのeps処理 |
+| python3          | thesis-monitor  |
+| python3-yaml     | students.yml / snapshot処理 |
+| poppler-utils    | pdfinfo（ページ数取得）  |
 
 Github Codespacesで開くとそのまま作業して commitすることができます。
 
